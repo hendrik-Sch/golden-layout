@@ -1,6 +1,6 @@
 {
   "name": "golden-layout",
-  "version": "1.5.9",
+  "version": "1.5.10",
   "author": "deepstreamHub GmbH",
   "license": "MIT",
   "devDependencies": {
@@ -10,7 +10,7 @@
     "grunt-gulp": "^1.0.1",
     "grunt-karma": "^2.0.0",
     "grunt-release": "0.13.*",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.2",
     "gulp-concat": "^2.6.0",
     "gulp-continuous-concat": "^0.1.1",
     "gulp-insert": "^0.5.0",
