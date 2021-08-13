@@ -1,7 +1,7 @@
 {
   "name": "golden-layout",
   "version": "1.5.10",
-  "author": "deepstreamHub GmbH",
+  "author": "profilsys GmbH",
   "license": "MIT",
   "devDependencies": {
     "grunt": "~0.4.2",
