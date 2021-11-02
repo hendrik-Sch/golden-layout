@@ -1,63 +1,63 @@
 (function($){var lm={"config":{},"container":{},"controls":{},"errors":{},"items":{},"utils":{}};
-lm.utils.F = function() {
+lm.utils.F = function () {
 };
 
-lm.utils.extend = function( subClass, superClass ) {
-	subClass.prototype = lm.utils.createObject( superClass.prototype );
+lm.utils.extend = function (subClass, superClass) {
+	subClass.prototype = lm.utils.createObject(superClass.prototype);
 	subClass.prototype.contructor = subClass;
 };
 
-lm.utils.createObject = function( prototype ) {
-	if( typeof Object.create === 'function' ) {
-		return Object.create( prototype );
+lm.utils.createObject = function (prototype) {
+	if (typeof Object.create === 'function') {
+		return Object.create(prototype);
 	} else {
 		lm.utils.F.prototype = prototype;
 		return new lm.utils.F();
 	}
 };
 
-lm.utils.objectKeys = function( object ) {
+lm.utils.objectKeys = function (object) {
 	var keys, key;
 
-	if( typeof Object.keys === 'function' ) {
-		return Object.keys( object );
+	if (typeof Object.keys === 'function') {
+		return Object.keys(object);
 	} else {
 		keys = [];
-		for( key in object ) {
-			keys.push( key );
+		for (key in object) {
+			keys.push(key);
 		}
 		return keys;
 	}
 };
 
-lm.utils.getHashValue = function( key ) {
-	var matches = location.hash.match( new RegExp( key + '=([^&]*)' ) );
-	return matches ? matches[ 1 ] : null;
+lm.utils.getHashValue = function (key) {
+	var matches = location.hash.match(new RegExp(key + '=([^&]*)'));
+	return matches ? matches[1] : null;
 };
 
-lm.utils.getQueryStringParam = function( param ) {
-	if( window.location.hash ) {
-		return lm.utils.getHashValue( param );
-	} else if( !window.location.search ) {
+lm.utils.getQueryStringParam = function (param) {
+	if (window.location.hash) {
+		return lm.utils.getHashValue(param);
+	} else if (!window.location.search) {
 		return null;
 	}
 
-	var keyValuePairs = window.location.search.substr( 1 ).split( '&' ),
+	var keyValuePairs = window.location.search.substr(1).split('&'),
 		params = {},
 		pair,
 		i;
 
-	for( i = 0; i < keyValuePairs.length; i++ ) {
-		pair = keyValuePairs[ i ].split( '=' );
-		params[ pair[ 0 ] ] = pair[ 1 ];
+	for (i = 0; i < keyValuePairs.length; i++) {
+		pair = keyValuePairs[i].split('=');
+		params[pair[0]] = pair[1];
 	}
 
-	return params[ param ] || null;
+	return params[param] || null;
 };
 
-lm.utils.copy = function( target, source ) {
-	for( var key in source ) {
-		target[ key ] = source[ key ];
+lm.utils.copy = function (target, source) {
+	for (var key in source) {
+		target[key] = source[key];
 	}
 	return target;
 };
@@ -72,27 +72,27 @@ lm.utils.copy = function( target, source ) {
  *
  * @returns {void}
  */
-lm.utils.animFrame = function( fn ) {
-	return ( window.requestAnimationFrame ||
-	window.webkitRequestAnimationFrame ||
-	window.mozRequestAnimationFrame ||
-	function( callback ) {
-		window.setTimeout( callback, 1000 / 60 );
-	})( function() {
-		fn();
-	} );
+lm.utils.animFrame = function (fn) {
+	return (window.requestAnimationFrame ||
+		window.webkitRequestAnimationFrame ||
+		window.mozRequestAnimationFrame ||
+		function (callback) {
+			window.setTimeout(callback, 1000 / 60);
+		})(function () {
+			fn();
+		});
 };
 
-lm.utils.indexOf = function( needle, haystack ) {
-	if( !( haystack instanceof Array ) ) {
-		throw new Error( 'Haystack is not an Array' );
+lm.utils.indexOf = function (needle, haystack) {
+	if (!(haystack instanceof Array)) {
+		throw new Error('Haystack is not an Array');
 	}
 
-	if( haystack.indexOf ) {
-		return haystack.indexOf( needle );
+	if (haystack.indexOf) {
+		return haystack.indexOf(needle);
 	} else {
-		for( var i = 0; i < haystack.length; i++ ) {
-			if( haystack[ i ] === needle ) {
+		for (var i = 0; i < haystack.length; i++) {
+			if (haystack[i] === needle) {
 				return i;
 			}
 		}
@@ -100,62 +100,62 @@ lm.utils.indexOf = function( needle, haystack ) {
 	}
 };
 
-if( typeof /./ != 'function' && typeof Int8Array != 'object' ) {
-	lm.utils.isFunction = function( obj ) {
+if (typeof /./ != 'function' && typeof Int8Array != 'object') {
+	lm.utils.isFunction = function (obj) {
 		return typeof obj == 'function' || false;
 	};
 } else {
-	lm.utils.isFunction = function( obj ) {
-		return toString.call( obj ) === '[object Function]';
+	lm.utils.isFunction = function (obj) {
+		return toString.call(obj) === '[object Function]';
 	};
 }
 
-lm.utils.fnBind = function( fn, context, boundArgs ) {
+lm.utils.fnBind = function (fn, context, boundArgs) {
 
-	if( Function.prototype.bind !== undefined ) {
-		return Function.prototype.bind.apply( fn, [ context ].concat( boundArgs || [] ) );
+	if (Function.prototype.bind !== undefined) {
+		return Function.prototype.bind.apply(fn, [context].concat(boundArgs || []));
 	}
 
-	var bound = function() {
+	var bound = function () {
 
 		// Join the already applied arguments to the now called ones (after converting to an array again).
-		var args = ( boundArgs || [] ).concat( Array.prototype.slice.call( arguments, 0 ) );
+		var args = (boundArgs || []).concat(Array.prototype.slice.call(arguments, 0));
 
 		// If not being called as a constructor
-		if( !(this instanceof bound) ) {
+		if (!(this instanceof bound)) {
 			// return the result of the function called bound to target and partially applied.
-			return fn.apply( context, args );
+			return fn.apply(context, args);
 		}
 		// If being called as a constructor, apply the function bound to self.
-		fn.apply( this, args );
+		fn.apply(this, args);
 	};
 	// Attach the prototype of the function to our newly created function.
 	bound.prototype = fn.prototype;
 	return bound;
 };
 
-lm.utils.removeFromArray = function( item, array ) {
-	var index = lm.utils.indexOf( item, array );
+lm.utils.removeFromArray = function (item, array) {
+	var index = lm.utils.indexOf(item, array);
 
-	if( index === -1 ) {
-		throw new Error( 'Can\'t remove item from array. Item is not in the array' );
+	if (index === -1) {
+		throw new Error('Can\'t remove item from array. Item is not in the array');
 	}
 
-	array.splice( index, 1 );
+	array.splice(index, 1);
 };
 
-lm.utils.now = function() {
-	if( typeof Date.now === 'function' ) {
+lm.utils.now = function () {
+	if (typeof Date.now === 'function') {
 		return Date.now();
 	} else {
-		return ( new Date() ).getTime();
+		return (new Date()).getTime();
 	}
 };
 
-lm.utils.getUniqueId = function() {
-	return ( Math.random() * 1000000000000000 )
-		.toString( 36 )
-		.replace( '.', '' );
+lm.utils.getUniqueId = function () {
+	return (Math.random() * 1000000000000000)
+		.toString(36)
+		.replace('.', '');
 };
 
 /**
@@ -168,21 +168,21 @@ lm.utils.getUniqueId = function() {
  *
  * @returns {String} filtered input
  */
-lm.utils.filterXss = function( input, keepTags ) {
+lm.utils.filterXss = function (input, keepTags) {
 
 	var output = input
-		.replace( /javascript/gi, 'j&#97;vascript' )
-		.replace( /expression/gi, 'expr&#101;ssion' )
-		.replace( /onload/gi, 'onlo&#97;d' )
-		.replace( /script/gi, '&#115;cript' )
-		.replace( /onerror/gi, 'on&#101;rror' );
+		.replace(/javascript/gi, 'j&#97;vascript')
+		.replace(/expression/gi, 'expr&#101;ssion')
+		.replace(/onload/gi, 'onlo&#97;d')
+		.replace(/script/gi, '&#115;cript')
+		.replace(/onerror/gi, 'on&#101;rror');
 
-	if( keepTags === true ) {
+	if (keepTags === true) {
 		return output;
 	} else {
 		return output
-			.replace( />/g, '&gt;' )
-			.replace( /</g, '&lt;' );
+			.replace(/>/g, '&gt;')
+			.replace(/</g, '&lt;');
 	}
 };
 
@@ -193,8 +193,19 @@ lm.utils.filterXss = function( input, keepTags ) {
  *
  * @returns {String} input without tags
  */
-lm.utils.stripTags = function( input ) {
-	return $.trim( input.replace( /(<([^>]+)>)/ig, '' ) );
+lm.utils.stripTags = function (input) {
+	return $.trim(input.replace(/(<([^>]+)>)/ig, ''));
+};
+
+/**
+ * Checks if current device is mobile
+ *
+ * @returns {Boolean} True if device is mobile
+ */
+lm.utils.checkIfMobile = function () {
+	var check = false;
+	(function (a) { if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(a) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0, 4))) check = true; })(navigator.userAgent || navigator.vendor || window.opera);
+	return check;
 };
 /**
  * A generic and very fast EventEmitter
@@ -2805,48 +2816,48 @@ lm.utils.copy( lm.controls.Splitter.prototype, {
  *
  * @constructor
  */
-lm.controls.Tab = function( header, contentItem ) {
+lm.controls.Tab = function (header, contentItem) {
 	this.header = header;
 	this.contentItem = contentItem;
-	this.element = $( lm.controls.Tab._template );
-	this.titleElement = this.element.find( '.lm_title' );
-	this.closeElement = this.element.find( '.lm_close_tab' );
-	this.closeElement[ contentItem.config.isClosable ? 'show' : 'hide' ]();
+	this.element = $(lm.controls.Tab._template);
+	this.titleElement = this.element.find('.lm_title');
+	this.closeElement = this.element.find('.lm_close_tab');
+	this.closeElement[contentItem.config.isClosable ? 'show' : 'hide']();
 	this.isActive = false;
 
-	this.setTitle( contentItem.config.title );
-	this.contentItem.on( 'titleChanged', this.setTitle, this );
+	this.setTitle(contentItem.config.title);
+	this.contentItem.on('titleChanged', this.setTitle, this);
 
 	this._layoutManager = this.contentItem.layoutManager;
 
-	if(
+	if (
 		this._layoutManager.config.settings.reorderEnabled === true &&
 		contentItem.config.reorderEnabled === true
 	) {
-		this._dragListener = new lm.utils.DragListener( this.element );
-		this._dragListener.on( 'dragStart', this._onDragStart, this );
-		this.contentItem.on( 'destroy', this._dragListener.destroy, this._dragListener );
+		this._dragListener = new lm.utils.DragListener(this.element);
+		this._dragListener.on('dragStart', this._onDragStart, this);
+		this.contentItem.on('destroy', this._dragListener.destroy, this._dragListener);
 	}
 
-	this._onTabClickFn = lm.utils.fnBind( this._onTabClick, this );
-	this._onCloseClickFn = lm.utils.fnBind( this._onCloseClick, this );
+	this._onTabClickFn = lm.utils.fnBind(this._onTabClick, this);
+	this._onCloseClickFn = lm.utils.fnBind(this._onCloseClick, this);
 
-	this.element.on( 'mousedown touchstart', this._onTabClickFn );
+	this.element.on('mousedown touchstart', this._onTabClickFn);
 
-	if( this.contentItem.config.isClosable ) {
-		this.closeElement.on( 'click touchstart', this._onCloseClickFn );
+	if (this.contentItem.config.isClosable) {
+		this.closeElement.on('click touchstart', this._onCloseClickFn);
 		this.closeElement.on('mousedown', this._onCloseMousedown);
 	} else {
 		this.closeElement.remove();
 	}
 
 	this.contentItem.tab = this;
-	this.contentItem.emit( 'tab', this );
-	this.contentItem.layoutManager.emit( 'tabCreated', this );
+	this.contentItem.emit('tab', this);
+	this.contentItem.layoutManager.emit('tabCreated', this);
 
-	if( this.contentItem.isComponent ) {
+	if (this.contentItem.isComponent) {
 		this.contentItem.container.tab = this;
-		this.contentItem.container.emit( 'tab', this );
+		this.contentItem.container.emit('tab', this);
 	}
 };
 
@@ -2859,7 +2870,7 @@ lm.controls.Tab._template = '<li class="lm_tab"><i class="lm_left"></i>' +
 	'<span class="lm_title"></span><div class="lm_close_tab"></div>' +
 	'<i class="lm_right"></i></li>';
 
-lm.utils.copy( lm.controls.Tab.prototype, {
+lm.utils.copy(lm.controls.Tab.prototype, {
 
 	/**
 	 * Sets the tab's title to the provided string and sets
@@ -2869,9 +2880,9 @@ lm.utils.copy( lm.controls.Tab.prototype, {
 	 * @public
 	 * @param {String} title can contain html
 	 */
-	setTitle: function( title ) {
-		this.element.attr( 'title', lm.utils.stripTags( title ) );
-		this.titleElement.html( title );
+	setTitle: function (title) {
+		this.element.attr('title', lm.utils.stripTags(title));
+		this.titleElement.html(title);
 	},
 
 	/**
@@ -2881,16 +2892,16 @@ lm.utils.copy( lm.controls.Tab.prototype, {
 	 * @public
 	 * @param {Boolean} isActive
 	 */
-	setActive: function( isActive ) {
-		if( isActive === this.isActive ) {
+	setActive: function (isActive) {
+		if (isActive === this.isActive) {
 			return;
 		}
 		this.isActive = isActive;
 
-		if( isActive ) {
-			this.element.addClass( 'lm_active' );
+		if (isActive) {
+			this.element.addClass('lm_active');
 		} else {
-			this.element.removeClass( 'lm_active' );
+			this.element.removeClass('lm_active');
 		}
 	},
 
@@ -2900,12 +2911,12 @@ lm.utils.copy( lm.controls.Tab.prototype, {
 	 * @private
 	 * @returns {void}
 	 */
-	_$destroy: function() {
-		this.element.off( 'mousedown touchstart', this._onTabClickFn );
-		this.closeElement.off( 'click touchstart', this._onCloseClickFn );
-		if( this._dragListener ) {
-			this.contentItem.off( 'destroy', this._dragListener.destroy, this._dragListener );
-			this._dragListener.off( 'dragStart', this._onDragStart );
+	_$destroy: function () {
+		this.element.off('mousedown touchstart', this._onTabClickFn);
+		this.closeElement.off('click touchstart', this._onCloseClickFn);
+		if (this._dragListener) {
+			this.contentItem.off('destroy', this._dragListener.destroy, this._dragListener);
+			this._dragListener.off('dragStart', this._onDragStart);
 			this._dragListener = null;
 		}
 		this.element.remove();
@@ -2920,8 +2931,8 @@ lm.utils.copy( lm.controls.Tab.prototype, {
 	 * @private
 	 * @returns {void}
 	 */
-	_onDragStart: function( x, y ) {
-		if( this.contentItem.parent.isMaximised === true ) {
+	_onDragStart: function (x, y) {
+		if (this.contentItem.parent.isMaximised === true) {
 			this.contentItem.parent.toggleMaximise();
 		}
 		new lm.controls.DragProxy(
@@ -2942,17 +2953,23 @@ lm.utils.copy( lm.controls.Tab.prototype, {
 	 * @private
 	 * @returns {void}
 	 */
-	_onTabClick: function( event ) {
+	_onTabClick: function (event) {
 		// left mouse button or tap
-		if( event.button === 0 || event.type === 'touchstart' ) {
+		if (lm.utils.checkIfMobile() && event.type === 'mousedown') {
+			event.preventDefault();
+
+			return;
+		}
+
+		if (event.button === 0 || event.type === 'touchstart') {
 			var activeContentItem = this.header.parent.getActiveContentItem();
-			if( this.contentItem !== activeContentItem ) {
-				this.header.parent.setActiveContentItem( this.contentItem );
+			if (this.contentItem !== activeContentItem) {
+				this.header.parent.setActiveContentItem(this.contentItem);
 			}
 
 			// middle mouse button
-		} else if( event.button === 1 && this.contentItem.config.isClosable ) {
-			this._onCloseClick( event );
+		} else if (event.button === 1 && this.contentItem.config.isClosable) {
+			this._onCloseClick(event);
 		}
 	},
 
@@ -2965,9 +2982,9 @@ lm.utils.copy( lm.controls.Tab.prototype, {
 	 * @private
 	 * @returns {void}
 	 */
-	_onCloseClick: function( event ) {
+	_onCloseClick: function (event) {
 		event.stopPropagation();
-		this.header.parent.removeChild( this.contentItem );
+		this.header.parent.removeChild(this.contentItem);
 	},
 
 
@@ -2980,10 +2997,10 @@ lm.utils.copy( lm.controls.Tab.prototype, {
 	 * @private
 	 * @returns {void}
 	 */
-	_onCloseMousedown: function(event) {
+	_onCloseMousedown: function (event) {
 		event.stopPropagation();
 	}
-} );
+});
 
 lm.controls.TransitionIndicator = function() {
 	this._element = $( '<div class="lm_transition_indicator"></div>' );

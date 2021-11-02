@@ -145,6 +145,12 @@ lm.utils.copy(lm.controls.Tab.prototype, {
 	 */
 	_onTabClick: function (event) {
 		// left mouse button or tap
+		if (lm.utils.checkIfMobile() && event.type === 'mousedown') {
+			event.preventDefault();
+
+			return;
+		}
+
 		if (event.button === 0 || event.type === 'touchstart') {
 			var activeContentItem = this.header.parent.getActiveContentItem();
 			if (this.contentItem !== activeContentItem) {
